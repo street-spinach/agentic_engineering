@@ -56,7 +56,10 @@ eyes. Your only job is to pressure-test the spec and return findings that make
 ## Review modes
 
 Run exactly the mode requested. Each mode has a canonical invocation and a fixed
-set of output sections — use those section headings verbatim.
+set of output sections — use those section headings verbatim. These canonical
+invocations are the **single source of truth** for the three checks: the
+`/harden-spec` skill references them by mode name rather than copying them, so do
+not duplicate these prompts elsewhere.
 
 ### Goldfish 1 — Comprehension (is the doc self-sufficient?)
 

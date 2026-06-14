@@ -42,27 +42,15 @@ Do not run it mid-draft — harden a spec the author considers finished.
 
 ## The Three Goldfish Checks
 
-Invoke `goldfish-spec-reviewer` by name (e.g. via the Task tool, or `@goldfish-spec-reviewer`) once per check, passing the canonical prompt verbatim so the subagent runs the right mode. These prompts are the canonical definition of each check:
+Invoke the `goldfish-spec-reviewer` subagent by name (via the Task tool, or `@goldfish-spec-reviewer`) **three separate times — once per mode** — telling it which mode to run:
 
-**Goldfish 1 — Comprehension** (is the doc self-sufficient?)
+1. **Goldfish 1 — Comprehension** — is the doc self-sufficient?
+2. **Goldfish 2 — Critic** — what did we miss? (flag correctness only)
+3. **Goldfish 3 — Readiness** — could a newcomer build it in one pass?
 
-```
-claude -p "Read SPEC.md and only the files it references. Explain what it is trying to accomplish and how the current system works. If anything is unclear or missing, list it."
-```
+The subagent owns the canonical `claude -p` prompt and the output sections for each mode — `agents/goldfish-spec-reviewer.md` is the **single source of truth**. Name the mode rather than copying its prompt here, so the prompts live in one place and cannot drift.
 
-**Goldfish 2 — Critic** (what did we miss?)
-
-```
-claude -p "You are a skeptical technical reviewer. Read SPEC.md and its referenced files. List faulty assumptions, missing edge cases, and ambiguities. Flag only what affects correctness."
-```
-
-**Goldfish 3 — Readiness** (could a newcomer build it in one pass?)
-
-```
-claude -p "You are an engineer new to this codebase. Read SPEC.md. Could you implement this in a single pass? List every question you would need answered first."
-```
-
-The `goldfish-spec-reviewer` subagent is the supported mechanism for these checks. Claude Code skill frontmatter cannot bind a subagent, so this skill invokes it explicitly by name in the body. If the subagent is unavailable, run the three `claude -p` lines above headless as a fallback — same prompts, same modes.
+Claude Code skill frontmatter cannot bind a subagent, so this skill invokes it explicitly by name. If the subagent is unavailable, run that mode's canonical `claude -p` line (from the agent) headless as a fallback — same prompt, same mode.
 
 ## Verdict & Marker
 
