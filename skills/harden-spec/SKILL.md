@@ -111,6 +111,20 @@ Whether <!-- VERIFIED by GOLDFISH --> was added, removed, preserved, or not adde
 Whether the spec is ready for human sign-off.
 ```
 
+## After a NEEDS HARDENING Verdict
+
+`/harden-spec` is a gate, not a fixer — on NEEDS HARDENING it returns the report and stops. Remediation is the Elephant's job, so the fresh-eyes review stays honest. Hand the report back to whoever owns the spec — the author / design step (e.g. the `spec-interviewer` skill) — **not** to implementation, and run this loop:
+
+1. **Triage the report:**
+   - *Required SPEC.md Changes* — fixable now; edit `SPEC.md` directly.
+   - *Blocking questions*, *Missing decisions*, and correctness *Ambiguities* — need a human or design answer **first**; resolve them, then write the answer into `SPEC.md`.
+   - *Nitpicks to Ignore* — do nothing; they do not block.
+2. **Update `SPEC.md`** with the fixes and the resolved decisions.
+3. **Re-run `/harden-spec`.** Each run is a brand-new Goldfish with no memory of the last one, so the revised spec must stand on its own again. Fixing one gap often exposes a deeper one — that is expected.
+4. **Repeat** until correctness-blocking findings are gone and only nitpicks remain, then **recommend human sign-off**.
+
+Never hand-add the marker to skip the loop: a run that is not PASS must leave `SPEC.md` unmarked (and any stale marker removed). Because coding agents gate on `<!-- VERIFIED by GOLDFISH -->`, implementation cannot legitimately begin until the loop converges.
+
 ## Rules
 
 - Fix the **spec, not the Goldfish**. Every finding exists to make `SPEC.md` stronger.
@@ -119,4 +133,4 @@ Whether the spec is ready for human sign-off.
 - Do not start implementation. Do not write or modify product code — the marker line in `SPEC.md` is the only allowed write.
 - Coding agents must implement **only** specs that contain `<!-- VERIFIED by GOLDFISH -->`. `/harden-spec` is the only workflow allowed to add this marker, and only after all three Goldfish checks pass with no correctness-blocking findings.
 - A failed Goldfish run must never leave the spec marked verified.
-- Repeat `/harden-spec` after each `SPEC.md` update until findings degrade into nitpicks. Once only nitpicks remain, recommend human sign-off.
+- On NEEDS HARDENING, fix the spec and re-run until only nitpicks remain, then recommend human sign-off — see *After a NEEDS HARDENING Verdict*.

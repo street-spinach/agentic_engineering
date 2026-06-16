@@ -17,8 +17,29 @@ Help a user turn a rough idea into a clear spec (`spec.md`) — from problem thr
 
 Skip it for trivial, fully-specified tasks.
 
+## Classify and Scope-Gate (Do This First)
+
+Before interviewing, classify the requirement by altitude. A vague *problem* is fine — that's what the interview is for. An unbounded *solution* is not — interviewing a too-big requirement just produces a sprawling, unbuildable spec. Triage first, then gate.
+
+**Altitude tiers:**
+
+- **Epic / Initiative** — reshapes or adds a major capability to the system. Spans multiple subsystems, weeks+ of work, many moving parts. *Examples: "add an agentic layer to our app," "make the platform multi-tenant," "migrate to microservices," "build an AI assistant into the product."*
+- **Feature** — one coherent capability a single spec can cover end-to-end. Days to a couple of weeks. One primary user flow. *Examples: "add SSO login," "let users export reports as PDF," "add a retry queue for failed webhooks."*
+- **Task** — a single well-bounded change. Hours to a day. *Examples: "add a rate limit to the login endpoint," "add a `created_at` column."*
+
+**The gate:** Only **Feature** and **Task** requirements are ready to interview. If you classify the requirement as **Epic**, **stop and push back** — do not start the problem interview. Tell the user the requirement is too high-level for one spec, and ask them to slice it into independent, end-to-end features first. Offer a candidate breakdown yourself (3–6 features, each standing alone and delivering value) so the user has something concrete to react to, then ask which one slice to spec now. Spec exactly one slice per session.
+
+Signals that a requirement is an Epic and must be sliced before interviewing:
+- It names a *layer*, *platform*, *system*, or *capability* rather than a behavior ("agentic layer," "analytics platform").
+- It bundles several distinct user flows or subsystems under one phrase.
+- You can't name the single end-to-end check that would prove it done.
+- "Implement / extend the system to do X" where X is open-ended.
+
+State your classification explicitly ("This reads as an Epic — let's slice it") so the user can correct you if you misjudged the altitude.
+
 ## Workflow
 
+0. **Classify and gate.** Run the triage above. If it's an Epic, push back and slice before going further. Proceed only with a single Feature- or Task-sized slice.
 1. **Frame the problem.** Ask what they want to build and why. One or two questions.
 2. **Interview in small batches.** Ask 2–4 focused questions at a time. Cover, in order: goal, users, problem, scope, constraints, success criteria. Wait for answers before moving on.
 3. **Slice the work.** Break the requirement into end-to-end product slices. Each slice stands alone, delivers value, and makes sense without the others.
@@ -90,6 +111,7 @@ Unresolved items.
 
 ## Rules
 
+- Classify before interviewing. State the altitude (Epic / Feature / Task). Push back on Epics — make the user slice them into independent features first, and spec only one slice per session.
 - Interview before drafting. No full spec from one prompt.
 - Ask in small batches; one topic at a time. Don't overwhelm.
 - Propose the design yourself, in prose and a block diagram — don't ask the user to propose first.
