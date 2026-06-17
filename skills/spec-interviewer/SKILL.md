@@ -37,6 +37,24 @@ Signals that a requirement is an Epic and must be sliced before interviewing:
 
 State your classification explicitly ("This reads as an Epic — let's slice it") so the user can correct you if you misjudged the altitude.
 
+## Value Check: Every Slice Must Be a Vertical Slice
+
+A slice is only valid if a real user or stakeholder can *exercise it and judge its value* within one feedback cycle. The point of the work is to ship business/consumer value we can test quickly and learn from — not to land plumbing nobody can see.
+
+**Reject layer-only slices** — they deliver nothing testable on their own:
+- *Backend-only* (API/service/schema with no surface a user touches) — the user can't see or judge it.
+- *Agent-only* (a model, tool, or capability not wired into the chat/UI the user actually uses) — building it without the wiring proves nothing.
+- *Frontend-only* against stubs — looks real, delivers no actual behavior.
+
+A valid slice crosses **every layer needed for the value to be felt**: e.g. a new agent capability is sliced *together with* its wiring into the chat interface; a backend feature is sliced *together with* the UI or endpoint a user exercises. If you can't name the human action that demonstrates the slice ("user types X in chat and sees Y"), it isn't a slice yet.
+
+**The tension — and how to resolve it.** Going end-to-end can balloon a slice until it rivals "do the whole thing." When that happens, **scope down by narrowing the behavior, not by dropping layers.** Keep it thin *vertically* (still crosses all layers), thin *horizontally* in what it does:
+- One happy path, not all cases. One user/role, not all. One input type, not many.
+- Hardcode or stub the edges (config, error handling, scale) and note them as follow-ups.
+- Defer breadth (more flows, more entities) to later slices.
+
+Strongly push toward further scoping whenever the end-to-end slice is still large. A smaller slice that a user can touch tomorrow beats a complete one they see next month. State the trade explicitly: "We can ship just the happy path through chat this week and get feedback — the rest becomes follow-up slices."
+
 ## Run in Plan Mode
 
 Conduct the entire interview in **plan mode**. Plan mode is read-only — it blocks file edits and code changes — which mechanically enforces this skill's core discipline: don't implement, or touch the codebase, while the spec is still being shaped. Soft rules get violated by accident; plan mode can't be.
@@ -52,7 +70,7 @@ If the user isn't in plan mode when the skill starts, ask to switch into it befo
 0. **Classify and gate.** Run the triage above. If it's an Epic, push back and slice before going further. Proceed only with a single Feature- or Task-sized slice.
 1. **Frame the problem.** Ask what they want to build and why. One or two questions.
 2. **Interview in small batches.** Ask 2–4 focused questions at a time. Cover, in order: goal, users, problem, scope, constraints, success criteria. Wait for answers before moving on.
-3. **Slice the work.** Break the requirement into end-to-end product slices. Each slice stands alone, delivers value, and makes sense without the others.
+3. **Slice the work.** Break the requirement into end-to-end product slices. Each slice stands alone, delivers value, and makes sense without the others. Run the Value Check on every slice: reject layer-only slices (backend-only, agent-only-without-wiring, frontend-on-stubs), and if an end-to-end slice is too big, scope it down by narrowing the behavior — never by dropping layers.
 4. **Propose the design — don't react to theirs.** Once you understand the system, draft the first design yourself in prose and a block diagram. A real proposal exposes your understanding and the user's blind spots; asking them to propose first lets their blind spots survive.
 5. **Record what you rejected.** For each major choice, note the alternatives considered and why they lost. Rejections become guardrails — they stop later work from drifting back into a ruled-out approach.
 6. **Plan the implementation.** List every file to be created or changed, and why.
@@ -81,9 +99,9 @@ What's included.
 What's explicitly out.
 
 ## Slices
-End-to-end pieces, each valuable on its own.
-- Slice 1: ...
-- Slice 2: ...
+End-to-end pieces, each valuable on its own. For each, name the human action that demonstrates its value (e.g. "user types X in chat → sees Y") — if you can't, it's a layer, not a slice.
+- Slice 1: ... — Demonstrated by: ...
+- Slice 2: ... — Demonstrated by: ...
 
 ## Technical Plan
 How it works, in prose, plus a block diagram of the major components.
@@ -123,6 +141,7 @@ Unresolved items.
 
 - Interview in plan mode. Stay read-only through classify, interview, design, and slicing; treat `ExitPlanMode` as the gate that finalizes and writes `spec.md`.
 - Classify before interviewing. State the altitude (Epic / Feature / Task). Push back on Epics — make the user slice them into independent features first, and spec only one slice per session.
+- Every slice must be a vertical slice — testable end-to-end value, not a layer in isolation. Reject backend-only, agent-only-without-wiring, and frontend-on-stubs. When end-to-end gets too big, narrow the behavior (one happy path, one user), never drop the layers. Optimize for value a user can test fast.
 - Interview before drafting. No full spec from one prompt.
 - Ask in small batches; one topic at a time. Don't overwhelm.
 - Propose the design yourself, in prose and a block diagram — don't ask the user to propose first.
