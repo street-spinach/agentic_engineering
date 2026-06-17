@@ -37,6 +37,16 @@ Signals that a requirement is an Epic and must be sliced before interviewing:
 
 State your classification explicitly ("This reads as an Epic — let's slice it") so the user can correct you if you misjudged the altitude.
 
+## Run in Plan Mode
+
+Conduct the entire interview in **plan mode**. Plan mode is read-only — it blocks file edits and code changes — which mechanically enforces this skill's core discipline: don't implement, or touch the codebase, while the spec is still being shaped. Soft rules get violated by accident; plan mode can't be.
+
+- **Enter plan mode at the start**, before classifying.
+- **Everything read-only:** classify, interview, propose the design, slice, and draft the spec *content shown in the chat* incrementally. No codebase edits are possible, so the discovery phase can't drift into implementation.
+- **`ExitPlanMode` is the finalization gate.** Writing `spec.md` is a file write, so it can't happen mid-interview. Present the assembled spec for approval via `ExitPlanMode`; only on approval, exit and write `spec.md`.
+
+If the user isn't in plan mode when the skill starts, ask to switch into it before interviewing.
+
 ## Workflow
 
 0. **Classify and gate.** Run the triage above. If it's an Epic, push back and slice before going further. Proceed only with a single Feature- or Task-sized slice.
@@ -111,6 +121,7 @@ Unresolved items.
 
 ## Rules
 
+- Interview in plan mode. Stay read-only through classify, interview, design, and slicing; treat `ExitPlanMode` as the gate that finalizes and writes `spec.md`.
 - Classify before interviewing. State the altitude (Epic / Feature / Task). Push back on Epics — make the user slice them into independent features first, and spec only one slice per session.
 - Interview before drafting. No full spec from one prompt.
 - Ask in small batches; one topic at a time. Don't overwhelm.
