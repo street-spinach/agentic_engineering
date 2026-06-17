@@ -1,0 +1,29 @@
+{
+  "_comment": "Auto-linting hook wiring (deterministic, never calls a model). This file lives at the agentic_eng artefact-library root. To activate it for a project, merge this 'hooks' block into that project's .claude/settings.json (or ~/.claude/settings.json), or symlink it. Paths use $CLAUDE_PROJECT_DIR; if the script lives elsewhere than the active project root, swap in the absolute path to hooks/lint-dispatch.sh.",
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"$CLAUDE_PROJECT_DIR/hooks/lint-dispatch.sh\"",
+            "timeout": 30
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"$CLAUDE_PROJECT_DIR/hooks/lint-dispatch.sh\"",
+            "timeout": 30
+          }
+        ]
+      }
+    ]
+  }
+}
