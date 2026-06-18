@@ -1,5 +1,5 @@
 {
-  "_comment": "Auto-linting hook wiring (deterministic, never calls a model). This file lives at the agentic_eng artefact-library root. To activate it for a project, merge this 'hooks' block into that project's .claude/settings.json (or ~/.claude/settings.json), or symlink it. Paths use $CLAUDE_PROJECT_DIR; if the script lives elsewhere than the active project root, swap in the absolute path to hooks/lint-dispatch.sh.",
+  "_comment": "Deterministic hook wiring (never calls a model): lint-dispatch.sh (lint lane) + test-runner.sh (unit-test lane). This file lives at the agentic_eng artefact-library root. To activate it for a project, merge this 'hooks' block into that project's .claude/settings.json (or ~/.claude/settings.json), or symlink it. Paths use $CLAUDE_PROJECT_DIR; if a script lives elsewhere than the active project root, swap in its absolute path. The two scripts share the PreToolUse Bash commit gate but own separate lanes (lint vs tests); test-runner adds no PostToolUse hook, so it never races the per-edit linter.",
   "hooks": {
     "PostToolUse": [
       {
@@ -21,6 +21,22 @@
             "type": "command",
             "command": "\"$CLAUDE_PROJECT_DIR/hooks/lint-dispatch.sh\"",
             "timeout": 30
+          },
+          {
+            "type": "command",
+            "command": "\"$CLAUDE_PROJECT_DIR/hooks/test-runner.sh\"",
+            "timeout": 300
+          }
+        ]
+      }
+    ],
+    "SubagentStop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"$CLAUDE_PROJECT_DIR/hooks/test-runner.sh\"",
+            "timeout": 300
           }
         ]
       }
