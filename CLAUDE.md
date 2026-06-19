@@ -17,6 +17,8 @@
    unit-testing skills' conventions — never full coverage. Delegate complete
    behavioral coverage to the `unit-test-generator` subagent before /code-review;
    do not hand-write exhaustive edge/negative/state tests in the main loop.
+   After /auto-commit at a slice boundary, run /compact — TASKS.md and SPEC.md
+   rehydrate the next slice.
 3. Never commit unreviewed or lint-failing code; never push or open a PR unless asked.
 4. PR: push -> /code-review (PR mode) -> fix findings -> ready for merge (human merges).
 5. Backfill (safety net): a local pre-push hook runs /test-backfill on `git push` —

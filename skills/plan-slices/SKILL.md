@@ -116,6 +116,8 @@ measure against it, stop when it's met:
 7. **Gate + advance** — only when green **and** acceptance met **and** APPROVE →
    `/auto-commit`, mark the slice done, log discovered work. *(Exit condition met
    → next slice.)*
+8. **Compact** — after `/auto-commit` at the slice boundary, run `/compact`;
+   TASKS.md and SPEC.md rehydrate the next slice.
 
 ## Goals & Loops
 
