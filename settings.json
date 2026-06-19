@@ -41,5 +41,166 @@
         ]
       }
     ]
-  }
+  },
+  "permissions": {
+    "defaultMode": "acceptEdits",
+    "allow": [
+      "Read",
+
+      "Bash(source *)",
+      "Bash(. *)",
+      "Bash(export *)",
+      "Bash(printenv *)",
+      "Bash(env)",
+      "Bash(cd *)",
+      "Bash(echo *)",
+      "Bash(mkdir *)",
+      "Bash(touch *)",
+      "Bash(cp *)",
+      "Bash(mv *)",
+      "Bash(chmod +x ./scripts/*.sh)",
+
+      "Bash(./scripts/*.sh)",
+      "Bash(./scripts/*.sh *)",
+      "Bash(bash ./scripts/*.sh *)",
+      "Bash(sh ./scripts/*.sh *)",
+
+      "Bash(make *)",
+      "Bash(just *)",
+
+      "Bash(git status *)",
+      "Bash(git diff *)",
+      "Bash(git log *)",
+      "Bash(git show *)",
+      "Bash(git add *)",
+      "Bash(git commit *)",
+      "Bash(git checkout *)",
+      "Bash(git switch *)",
+      "Bash(git branch *)",
+      "Bash(git restore *)",
+      "Bash(git stash *)",
+      "Bash(git fetch *)",
+      "Bash(git pull *)",
+      "Bash(git merge *)",
+      "Bash(git rebase *)",
+      "Bash(git tag *)",
+
+      "Bash(gh *)",
+
+      "Bash(flutter *)",
+      "Bash(dart *)",
+      "Bash(pod install *)",
+
+      "Bash(go *)",
+      "Bash(gofmt *)",
+      "Bash(goimports *)",
+      "Bash(golangci-lint *)",
+      "Bash(dlv *)",
+
+      "Bash(node *)",
+      "Bash(npm *)",
+      "Bash(npx *)",
+      "Bash(yarn *)",
+      "Bash(pnpm *)",
+      "Bash(bun *)",
+      "Bash(bunx *)",
+      "Bash(tsc *)",
+      "Bash(eslint *)",
+      "Bash(prettier *)",
+      "Bash(jest *)",
+      "Bash(vitest *)",
+
+      "Bash(python *)",
+      "Bash(python3 *)",
+      "Bash(pip *)",
+      "Bash(pip3 *)",
+      "Bash(pipx *)",
+      "Bash(uv *)",
+      "Bash(uvx *)",
+      "Bash(poetry *)",
+      "Bash(pytest *)",
+      "Bash(ruff *)",
+      "Bash(black *)",
+      "Bash(isort *)",
+      "Bash(mypy *)",
+      "Bash(flake8 *)",
+      "Bash(pylint *)",
+
+      "Bash(aws *)",
+      "Bash(gcloud *)",
+      "Bash(gsutil *)",
+      "Bash(bq *)",
+
+      "Bash(docker *)",
+      "Bash(docker-compose *)",
+
+      "WebFetch(domain:pub.dev)",
+      "WebFetch(domain:dart.dev)",
+      "WebFetch(domain:docs.flutter.dev)",
+      "WebFetch(domain:pkg.go.dev)",
+      "WebFetch(domain:go.dev)",
+      "WebFetch(domain:npmjs.com)",
+      "WebFetch(domain:*.npmjs.com)",
+      "WebFetch(domain:pypi.org)",
+      "WebFetch(domain:docs.python.org)",
+      "WebFetch(domain:docs.aws.amazon.com)",
+      "WebFetch(domain:cloud.google.com)",
+      "WebFetch(domain:cli.github.com)",
+      "WebFetch(domain:docs.github.com)",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "WebFetch(domain:stackoverflow.com)"
+    ],
+    "ask": [
+      "Bash(git push *)",
+      "Bash(sudo *)",
+
+      "Bash(gh repo delete *)",
+      "Bash(gh secret *)",
+
+      "Bash(aws * delete*)",
+      "Bash(aws s3 rm *)",
+      "Bash(aws s3 rb *)",
+      "Bash(aws iam *)",
+
+      "Bash(gcloud * delete*)",
+      "Bash(gsutil rm *)",
+
+      "Bash(docker push *)",
+      "Bash(docker system prune *)",
+      "Bash(docker volume rm *)",
+      "Bash(docker volume prune *)",
+
+      "Bash(npm publish *)",
+      "Bash(npm unpublish *)",
+      "Bash(pip uninstall *)"
+    ],
+    "deny": [
+      "Read(.env)",
+      "Read(**/.env)",
+      "Read(**/.env.*)",
+      "Read(**/*.pem)",
+      "Read(**/*.key)",
+      "Read(**/id_rsa*)",
+      "Read(**/credentials)",
+      "Read(**/secrets/**)",
+      "Read(~/.aws/**)",
+      "Read(~/.ssh/**)",
+      "Read(~/.config/gcloud/**)",
+      "Read(~/.kube/**)",
+
+      "Edit(.env)",
+      "Edit(**/.env)",
+      "Edit(**/.env.*)",
+      "Edit(~/.aws/**)",
+      "Edit(~/.ssh/**)",
+      "Edit(~/.config/gcloud/**)",
+
+      "Bash(git push --force *)",
+      "Bash(git push -f *)",
+      "Bash(rm -rf /*)",
+      "Bash(rm -rf ~/*)"
+    ]
+  
+}
 }
