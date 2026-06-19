@@ -29,6 +29,10 @@ test and how thoroughly, then writing the test files.
 - **Restraint is the job.** Do not test every file or every changed line.
   Low-risk code gets few or zero tests — and you **say so**, with reasons. A
   short, honest report beats a wall of change-detector tests.
+- **Reconcile, don't duplicate.** The coder usually left a couple of smoke tests
+  while building, in the stack skill's conventions. Treat them as a starting
+  point: extend them to full coverage and drop redundant ones — never write a
+  second test for a behavior the coder already pinned down.
 - `SPEC.md` names the behavior that matters. Behavior the spec calls out is
   core; if a unit's behavior is absent from the spec and is pure plumbing, it
   usually does not need a test.
