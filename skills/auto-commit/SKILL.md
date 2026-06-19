@@ -41,7 +41,10 @@ Enforce this order.
 5. **Compose.** Write a conventional-commit message derived from the *actual* diff. If the diff spans multiple concerns, propose splitting into atomic commits.
 6. **Stage precisely.** `git add <specific files>` — vetted only, never `.` or `-A`.
 7. **Re-review.** `git diff --staged` again, right before commit — last chance to catch a stray file.
-8. **Confirm.** Show the staged set + message; require an OK unless in auto mode.
+8. **Confirm.** Autonomous by default: for a clean, unambiguous change set, show the
+   staged set + message and proceed **without a prompt**. A hard stop or genuine
+   ambiguity (below) halts and surfaces instead of committing. Ask for a manual
+   confirmation checkpoint only when explicitly requested.
 9. **Commit.** `git commit -m "<message>"` (local).
 10. **Optional, explicit only.** `git push -u origin <branch>`, then `gh pr create --title ... --body ... --base ...`.
 
@@ -52,8 +55,8 @@ Enforce this order.
 - **Sensitive files.** Name + content matching; hard stop.
 - **Lint/test status.** Run and confirm; never imply success when unconfigured.
 - **Branch.** Refuse/warn on protected branches; the PR flow needs a feature branch.
-- **Confirmation.** Show the final staged set + message; require OK unless in auto mode.
-- **Auto mode.** Skips *only* the confirmation prompt, and only for a clean, unambiguous change set. It never skips the safety scan and never overrides a hard stop.
+- **Confirmation.** Autonomous by default: a clean, unambiguous change set commits without a prompt — the staged set + message are shown, not gated on an OK.
+- **What autonomy never skips.** It skips *only* the confirmation prompt. It never skips the safety scan and never overrides a hard stop — secrets, out-of-scope/untracked files, a protected branch, a multi-concern split, or a huge/ambiguous diff still halt and surface. Push / PR / merge stay explicit and are never autonomous.
 
 ## Commit Message Format
 

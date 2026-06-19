@@ -62,8 +62,9 @@ history.
    the coder (code bug, do **not** commit); tag B → hand back to the generator to
    fix the test; tag C → report, don't block.
 5. **Commit locally on a branch.** On the feature branch the run is on
-   (`test-backfill/<short-sha>`), run **`/auto-commit`** (auto mode) — it stages
-   only the vetted test files, scans for secrets, and makes a **local** commit.
+   (`test-backfill/<short-sha>`), run **`/auto-commit`** (autonomous; local commit
+   only) — it stages only the vetted test files, scans for secrets, and makes a
+   **local** commit.
    The test-runner commit gate validates here. **Stop at the local commit** — do
    not push or open the PR yourself.
 6. **Hand off push + PR + marker to deterministic steps.** Pushing the branch,
@@ -83,7 +84,7 @@ history.
 - **Tests only.** The generator writes test files, never production code. A tag-A
   failure (real code bug) is **reported, not patched** — that's the coder's job.
 - **Never merge; never commit to `main`.** Always a feature branch + PR; a human
-  reviews and merges. Reuse `/auto-commit` (auto mode) for the local commit's
+  reviews and merges. Reuse `/auto-commit` (autonomous; local commit only) for the
   staging + secret scan — don't reimplement it, and don't push from the skill.
 - **Push, PR, and marker writes stay deterministic.** They live in the pre-push
   hook's runner (plain shell), not in Claude — so the skill needs no relaxed

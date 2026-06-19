@@ -57,11 +57,15 @@ Auto-detect the mode, or accept an explicit mode / PR number from the user.
 
 ## Routing
 
-- **CHANGES REQUESTED** → return the blocking findings to the coder to fix, then
-  **re-run this skill** (a fresh subagent each time) until `APPROVE`. Log
-  Recommended / Nits as follow-ups — they do **not** block.
-- **APPROVE (local)** → trigger **`/auto-commit`**. If the auto-commit skill is not
-  present yet, stop at **"ready to commit"** instead.
+- **CHANGES REQUESTED (local)** → the coder applies the blocking fixes and this
+  skill **re-runs automatically** (a fresh subagent each round) **without prompting
+  you**. Bound the loop to **3 rounds**; if it still has not reached `APPROVE`,
+  **stop and hand the outstanding findings back to you** — do not keep looping or
+  commit. Recommended / Nits are logged as follow-ups; they never block or extend
+  the loop.
+- **APPROVE (local)** → **automatically trigger `/auto-commit`**, which commits
+  locally without a prompt. If the auto-commit skill is not present yet, stop at
+  **"ready to commit"** instead.
 - **APPROVE (PR)** → report **"ready for merge."** Posting a PR review
   (`gh pr review --approve` / `--request-changes` / `--comment`) is a **remote
   write** — do it **only when explicitly asked**. Merge is **always** a human action.

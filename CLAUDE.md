@@ -4,6 +4,10 @@
 
 1. Spec: /spec-interviewer -> /harden-spec must stamp SPEC.md before any code.
 2. Per slice: implement -> lint+tests -> /code-review (must APPROVE) -> /auto-commit.
+   This local loop runs autonomously: code-review <-> coder-fix repeats (bounded)
+   until APPROVE, then /auto-commit commits locally without prompting. It halts and
+   asks only on a hard stop (secrets, out-of-scope files, protected branch), if the
+   review doesn't converge, or at push/PR/merge (always explicit).
    Tests are split: while implementing, the coder writes only a couple of smoke
    tests for the unit it is building (to confirm intent), following the
    unit-testing skills' conventions — never full coverage. Delegate complete
