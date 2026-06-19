@@ -48,8 +48,8 @@ Auto-detect the mode, or accept an explicit mode / PR number from the user.
    `@code-reviewer`), telling it the **mode** and **what** to review. Hand it **no
    code from chat** — it reads the diff itself. Use **deep mode** (multiple lens
    passes) only for large or high-risk changes. For high-risk security surface,
-   **additionally** invoke the existing **`security-review`** skill — do not
-   re-implement a deep scan here.
+   **additionally** invoke the existing **`security-review`** skill (per Hard Rules,
+   don't re-implement a deep scan here).
 5. **Consolidate** the findings into a **Code Review Report** (format below).
 6. **Decide the verdict** — `APPROVE` (no blocking findings) or
    `CHANGES REQUESTED` (≥ 1 blocking finding).
@@ -72,8 +72,8 @@ Auto-detect the mode, or accept an explicit mode / PR number from the user.
 
 ## Hard Rules
 
-- **Review only a Goldfish-verified diff.** No `<!-- VERIFIED by GOLDFISH -->`,
-  no review — point to `/harden-spec`.
+- **Review only a Goldfish-verified diff** — enforced by Workflow step 2 (no
+  `<!-- VERIFIED by GOLDFISH -->`, no review).
 - **Never fix code.** The coder fixes; the subagent and this skill return findings.
 - **A blocking verdict cannot be bypassed.** `APPROVE` is required before
   `/auto-commit`.

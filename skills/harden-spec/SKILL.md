@@ -44,11 +44,13 @@ Do not run it mid-draft — harden a spec the author considers finished.
 
 Invoke the `goldfish-spec-reviewer` subagent by name (via the Task tool, or `@goldfish-spec-reviewer`) **three separate times — once per mode** — telling it which mode to run:
 
-1. **Goldfish 1 — Comprehension** — is the doc self-sufficient?
-2. **Goldfish 2 — Critic** — what did we miss? (flag correctness only)
-3. **Goldfish 3 — Readiness** — could a newcomer build it in one pass?
+1. **Goldfish 1 — Comprehension** — is the doc self-sufficient? *(model: sonnet — the agent default)*
+2. **Goldfish 2 — Critic** — what did we miss? (flag correctness only) *(model: opus — override the agent default on this invocation)*
+3. **Goldfish 3 — Readiness** — could a newcomer build it in one pass? *(model: sonnet — the agent default)*
 
 The subagent owns the canonical `claude -p` prompt and the output sections for each mode — `agents/goldfish-spec-reviewer.md` is the **single source of truth**. Name the mode rather than copying its prompt here, so the prompts live in one place and cannot drift.
+
+**Model per check.** The critic carries the heaviest correctness reasoning, so run **Goldfish 2 on Opus** — pass the model override (`model: opus`) on that Task-tool invocation. Goldfish 1 and 3 use the agent's default (`sonnet`), so they need no override. If you fall back to the headless `claude -p` line, prefix Goldfish 2's with `--model opus`.
 
 Claude Code skill frontmatter cannot bind a subagent, so this skill invokes it explicitly by name. If the subagent is unavailable, run that mode's canonical `claude -p` line (from the agent) headless as a fallback — same prompt, same mode.
 

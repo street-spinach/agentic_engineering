@@ -70,7 +70,7 @@ If the user isn't in plan mode when the skill starts, ask to switch into it befo
 0. **Classify and gate.** Run the triage above. If it's an Epic, push back and slice before going further. Proceed only with a single Feature- or Task-sized slice.
 1. **Frame the problem.** Ask what they want to build and why. One or two questions.
 2. **Interview in small batches.** Ask 2–4 focused questions at a time. Cover, in order: goal, users, problem, scope, constraints, success criteria. Wait for answers before moving on.
-3. **Slice the work.** Break the requirement into end-to-end product slices. Each slice stands alone, delivers value, and makes sense without the others. Run the Value Check on every slice: reject layer-only slices (backend-only, agent-only-without-wiring, frontend-on-stubs), and if an end-to-end slice is too big, scope it down by narrowing the behavior — never by dropping layers.
+3. **Slice the work.** Break the requirement into end-to-end product slices. Each slice stands alone, delivers value, and makes sense without the others. Run the **Value Check** (see that section above) on every slice.
 4. **Propose the design — don't react to theirs.** Once you understand the system, draft the first design yourself in prose and a block diagram. A real proposal exposes your understanding and the user's blind spots; asking them to propose first lets their blind spots survive.
 5. **Record what you rejected.** For each major choice, note the alternatives considered and why they lost. Rejections become guardrails — they stop later work from drifting back into a ruled-out approach.
 6. **Plan the implementation.** List every file to be created or changed, and why.
@@ -141,14 +141,13 @@ Unresolved items.
 
 - Interview in plan mode. Stay read-only through classify, interview, design, and slicing; treat `ExitPlanMode` as the gate that finalizes and writes `spec.md`.
 - Classify before interviewing. State the altitude (Epic / Feature / Task). Push back on Epics — make the user slice them into independent features first, and spec only one slice per session.
-- Every slice must be a vertical slice — testable end-to-end value, not a layer in isolation. Reject backend-only, agent-only-without-wiring, and frontend-on-stubs. When end-to-end gets too big, narrow the behavior (one happy path, one user), never drop the layers. Optimize for value a user can test fast.
+- Every slice must be a vertical slice that delivers testable, end-to-end value, and stays independent (each makes sense without the others) — see the **Value Check: Every Slice Must Be a Vertical Slice** section for the full rule.
 - Interview before drafting. No full spec from one prompt.
 - Ask in small batches; one topic at a time. Don't overwhelm.
 - Propose the design yourself, in prose and a block diagram — don't ask the user to propose first.
 - Resist sycophancy. Challenging the user's thinking is the helpful behavior, not agreeing. If the session slides into easy agreement, push back and name the risks. When challenged ("why do you think that?"), re-examine your reasoning instead of folding.
 - Document rejected alternatives — they keep later work from sliding back into a ruled-out approach.
 - Don't jump to implementation while still framing the problem; reach the technical plan only after the slices are agreed.
-- Keep slices independent, valuable, and end-to-end.
 - No implementation or design detail beyond the spec's own sections unless the user asks.
 - Be concise. Cut filler words.
 - Capture assumptions, decisions, open questions, and non-goals as you go.

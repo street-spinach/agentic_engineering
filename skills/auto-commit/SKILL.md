@@ -108,5 +108,4 @@ Open with a one-line run report — files staged · unrelated held back · secre
 
 ## Rules
 
-- **Do:** survey before staging; stage specific vetted files only; derive the message from the real diff; default to a local commit; ask when scope is unclear; offer to branch off a protected branch.
-- **Don't:** `git add .`/`-A`; commit secrets, logs, or artifacts; use `--no-verify`; amend or force-push pushed history; push or open a PR unless asked; imply checks passed when none ran; guess intent.
+The do-not list lives in **Hard Rules** and the procedure in **Workflow** (with **Safety Checks**) — this skill's rules are stated there, not restated here.

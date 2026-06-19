@@ -107,8 +107,8 @@ measure against it, stop when it's met:
 1. **Plan the slice** — lock the goal (acceptance criteria), impacted files, and
    validation steps. *(Set the target.)*
 2. **Implement** — code for this slice only; the lint hook gives live feedback.
-3. **Test as part of the slice** — `unit-test-generator`, risk-based, at the depth
-   the slice's risk warrants. Not a final phase.
+3. **Test as part of the slice** — delegate to `unit-test-generator`, risk-based,
+   at the depth the slice's risk warrants (per Hard Rules; not a final phase).
 4. **Run checks** — lint + test-runner hooks. *(Measure.)*
 5. **Review against acceptance** — `/code-review` must APPROVE **and** the goal
    must be met. *(Compare.)*
@@ -136,7 +136,8 @@ measure against it, stop when it's met:
 
 ## Failure / Edge Behavior
 
-- **Spec not verified** → stop; point to `/harden-spec`. Don't plan.
+- **Spec not verified** → the verified-spec Hard Rule applies: stop and point to
+  `/harden-spec`.
 - **No Verification or Non-Goals section in `SPEC.md`** → note the gap (so the
   outer-loop exit condition and the Out-of-scope list are weaker than they should
   be) and proceed conservatively.

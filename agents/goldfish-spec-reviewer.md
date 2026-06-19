@@ -83,6 +83,10 @@ Output sections:
 Act as a **skeptical technical reviewer**. Flag **only** what affects
 correctness. Anything that does not affect correctness goes under **Nitpicks**.
 
+Run this mode on **Opus** (the invoker overrides the agent's default `sonnet`
+for this check, since the critic carries the heaviest correctness reasoning).
+Goldfish 1 and 3 run on the default `sonnet`.
+
 Canonical invocation:
 
 ```
