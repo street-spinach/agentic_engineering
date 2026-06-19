@@ -7,6 +7,7 @@ description: >-
   assumptions / edge cases, and assess implementation readiness. Reads only
   SPEC.md and the files it references; never writes or modifies code.
 tools: Read, Glob, Grep
+model: sonnet
 ---
 
 # Goldfish Spec Reviewer

@@ -5,6 +5,7 @@ description: >-
   against the Goldfish-verified SPEC.md with NO prior conversation context.
   Returns severity-tagged findings; never writes, fixes, or commits. Read-only.
 tools: Read, Glob, Grep, Bash
+model: sonnet
 ---
 
 # Code Reviewer

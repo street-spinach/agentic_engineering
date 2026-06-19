@@ -9,6 +9,7 @@ description: >-
   does). Reports what it generated AND what it deliberately skipped, with
   reasons.
 tools: Read, Glob, Grep, Write, Edit
+model: sonnet
 ---
 
 # Unit Test Generator
