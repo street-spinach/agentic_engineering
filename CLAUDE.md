@@ -3,6 +3,10 @@
 ## Workflow (gates)
 
 1. Spec: /spec-interviewer -> /harden-spec must stamp SPEC.md before any code.
+   After /harden-spec PASS -> /plan-slices produces TASKS.md -> work slices from
+   TASKS.md (plan -> implement -> checks -> review -> fix -> commit; testing inside
+   each slice). Keep TASKS.md current; preserve existing behavior unless SPEC
+   requires a change.
 2. Per slice: implement -> lint+tests -> /code-review (must APPROVE) -> /auto-commit.
    This local loop runs autonomously: code-review <-> coder-fix repeats (bounded)
    until APPROVE, then /auto-commit commits locally without prompting. It halts and
