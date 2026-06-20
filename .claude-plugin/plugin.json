@@ -1,0 +1,10 @@
+{
+  "name": "agentic-eng",
+  "version": "0.1.0",
+  "description": "Gated agentic-engineering workflow — spec-interviewer -> harden-spec -> plan-slices -> per-slice implement/review/commit — with fresh-eyes subagents and deterministic lint/test hooks.",
+  "author": {
+    "name": "Madushanka",
+    "email": "madushanka@wso2.com"
+  },
+  "keywords": ["agentic", "workflow", "spec", "code-review", "testing"]
+}

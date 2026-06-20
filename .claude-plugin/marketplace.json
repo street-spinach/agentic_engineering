@@ -1,0 +1,11 @@
+{
+  "name": "agentic-eng-marketplace",
+  "owner": "Madushanka",
+  "description": "Local marketplace for the agentic-eng workflow plugin.",
+  "plugins": [
+    {
+      "name": "agentic-eng",
+      "source": "./"
+    }
+  ]
+}

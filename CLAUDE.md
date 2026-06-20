@@ -2,6 +2,10 @@
 
 ## Workflow (gates)
 
+0. Front door (new intent): triage before anything else. Just messy wording ->
+   /prompt-enhancer to sharpen it. Unclear scope/requirements -> /spec-interviewer.
+   Already sharp (and SPEC verified) -> proceed. Run /prompt-enhancer before spec or
+   implementation whenever only the wording needs work.
 1. Spec: /spec-interviewer -> /harden-spec must stamp SPEC.md before any code.
    After /harden-spec PASS -> /plan-slices produces TASKS.md -> work slices from
    TASKS.md (plan -> implement -> checks -> review -> fix -> commit; testing inside

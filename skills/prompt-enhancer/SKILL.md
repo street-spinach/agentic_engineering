@@ -1,11 +1,11 @@
 ---
 name: Prompt Enhancer
 description: >-
-  Sharpen a rough or casual intent into one clear, direct, well-worded prompt for the
-  coding agent. Use when a request is vague or messy and you want it to read solid
-  before handing it over. Improves and tidies the wording — it does NOT rebuild the
-  spec: scope, constraints, acceptance criteria, and verification stay in SPEC.md and
-  are referenced, not restated. Keeps the prompt short.
+  Rewrite a rough, casual, or first-pass coding request into one sharp, direct prompt
+  at the START of a new request, before any spec or implementation. Trigger when the
+  wording is vague or messy but the scope is clear. Skip if the prompt is already
+  sharp, or if the gap is spec-level — then use spec-interviewer instead. Improves
+  wording only; never restates scope, constraints, or acceptance criteria, which stay in SPEC.md.
 ---
 
 # Prompt Enhancer
