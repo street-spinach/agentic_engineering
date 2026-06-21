@@ -10,7 +10,8 @@
    After /harden-spec PASS -> /plan-slices produces TASKS.md -> work slices from
    TASKS.md (plan -> implement -> checks -> review -> fix -> commit; testing inside
    each slice). Keep TASKS.md current; preserve existing behavior unless SPEC
-   requires a change.
+   requires a change. SPEC.md and TASKS.md are ephemeral working memory —
+   gitignored, never committed (durable knowledge is distilled at step 6).
 2. Per slice: implement -> lint+tests -> /code-review (must APPROVE) -> /auto-commit.
    This local loop runs autonomously: code-review <-> coder-fix repeats (bounded)
    until APPROVE, then /auto-commit commits locally without prompting. It halts and
@@ -29,6 +30,11 @@
    it scopes to code new since the last marker (never the whole history), delegates
    coverage gaps to the `unit-test-generator`, validates via the test-runner, and
    opens a PR with the added tests for human review + merge.
+6. Distill (on feature completion): when all TASKS.md slices are done and SPEC.md's
+   Verification passes, run /distill-spec -> lift Decisions + rejected alternatives
+   into docs/adr/NNNN (immutable) and refresh ARCHITECTURE.md (current-state); both
+   are committed. SPEC.md/TASKS.md are then discarded. New work reads ARCHITECTURE.md
+   + docs/adr/ for the "why", not old specs.
 
 Test-runner hook results route as: A -> coder fixes code; B -> unit-test-generator
 fixes the test; C -> report, don't hard-block; missing core coverage -> back to the
