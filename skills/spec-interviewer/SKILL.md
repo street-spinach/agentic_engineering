@@ -1,7 +1,7 @@
 ---
 name: Spec Interviewer
 description: >-
-  Interview a user to co-write a rigorous spec (spec.md) — interrogating BOTH the product
+  Interview a user to co-write a rigorous spec (SPEC.md) — interrogating BOTH the product
   angle (problem, users, value) AND the technical angle (architecture, data, failure modes,
   constraints), from problem through technical plan to verification. Use to turn a rough idea
   or feature request into a structured, buildable spec. Don't draft from one prompt and don't
@@ -13,7 +13,7 @@ description: >-
 
 ## Purpose
 
-Turn a rough idea into a clear, buildable spec (`spec.md`) — by interrogating it, not
+Turn a rough idea into a clear, buildable spec (`SPEC.md`) — by interrogating it, not
 transcribing it. Interview across both the product and the technical dimensions, propose
 concrete options at every decision, pressure-test the reasoning, and build the spec section by
 section. The interview is the cheapest place in the whole lifecycle to find a flaw: an
@@ -110,18 +110,40 @@ each per the toolkit.
 - Value & success: the measurable outcome that means this worked.
 - Scope & non-goals: what's in, and what's deliberately out.
 
-**Technical angle — how & what-if:**
+**Technical angle — how & what-if.** Go deep here — this is where unbuildable specs hide. Don't
+settle for one answer per topic; follow each answer with the sharper question it invites. Cover:
 
-- Current system: what exists, what it touches, what you must not break.
-- Approach: the main components and how data flows between them.
-- Data & state: shape, source of truth, migrations, consistency.
-- Integration & contracts: APIs, events, dependencies, backward compatibility.
-- Failure & edges: errors, empty/invalid input, concurrency, idempotency, limits.
-- Non-functionals: scale, latency, security/authz, privacy, observability, rollout.
-- Constraints: time, tech, budget, policy.
+- **Current system & blast radius:** what exists today, what this touches, what you must not
+  break. Which modules/services/tables are in the path? What's the contract with each? What
+  currently depends on the things you're about to change?
+- **Approach & components:** the main components and how data flows between them. Where does
+  each piece run (client, server, worker, job)? Synchronous or async? Push or pull? Why this
+  decomposition and not a simpler one?
+- **Data & state:** the exact shape of the data, the source of truth, who else reads/writes it.
+  New tables/columns/indexes? Migration plan and backfill? Read/write consistency needs? What's
+  the cardinality and growth rate? Retention and deletion?
+- **Interfaces & contracts:** every API, event, schema, or function signature added or changed.
+  Request/response shape, status/error codes, versioning. Backward compatibility — who breaks if
+  this changes? Is the contract additive or breaking?
+- **Control flow & lifecycle:** the end-to-end sequence for the happy path. Where are the state
+  transitions? What's idempotent vs. at-most-once vs. at-least-once? What happens on retry,
+  timeout, partial write, or crash mid-operation?
+- **Concurrency & ordering:** what runs at the same time? Shared state, race conditions, locks,
+  transactions. Does order matter? What if two requests hit the same resource at once?
+- **Failure & edges:** every error path. Empty/null/malformed input, downstream dependency down,
+  rate limits hit, quota exceeded, the 100× load case, the zero-rows case. What's the fallback,
+  and is it degraded-but-working or hard-fail?
+- **Non-functionals (put numbers on these):** expected/peak throughput, p50/p95/p99 latency
+  budget, data volume, auth/authz model, privacy & PII handling, secrets, logging/metrics/traces
+  for debugging, and the rollout/rollback plan (flag? phased? reversible migration?).
+- **Testing & observability:** how is each layer tested? What proves it works in production —
+  which metric or log tells you it's healthy, and which tells you it's broken?
+- **Constraints:** time, tech stack lock-in, budget, team skills, policy/compliance.
 
 Tie every technical choice back to the product value it serves — a technically elegant answer
-that no user outcome needs is a smell.
+that no user outcome needs is a smell. And when a technical answer is vague ("we'll cache it,"
+"it'll scale," "we handle errors"), apply the grilling toolkit: quantify it, name the failure
+mode, demand the mechanism.
 
 ## Propose Options at Every Decision
 
@@ -167,9 +189,9 @@ the codebase, while the spec is still being shaped.
 - **Enter plan mode at the start**, before classifying.
 - Classify, interview, propose options, slice, and draft the spec *content shown in chat* — all
   read-only.
-- **`ExitPlanMode` is the finalization gate.** Writing `spec.md` is a file write, so it can't
+- **`ExitPlanMode` is the finalization gate.** Writing `SPEC.md` is a file write, so it can't
   happen mid-interview. Present the assembled spec for approval via `ExitPlanMode`; only on
-  approval, exit and write `spec.md`.
+  approval, exit and write `SPEC.md`.
 
 If the user isn't in plan mode when the skill starts, ask to switch into it before interviewing.
 
@@ -186,11 +208,14 @@ If the user isn't in plan mode when the skill starts, ask to switch into it befo
    understanding and the user's blind spots; asking them to propose first lets theirs survive.
 6. **Plan the implementation** — every file to be created or changed, and why.
 7. **Define verification** — the end-to-end check that proves the feature works.
-8. **Draft `spec.md` incrementally** — section by section, showing progress; never dump a
-   finished doc.
+8. **Draft `SPEC.md` incrementally** — section by section, showing progress; never dump a
+   finished doc. Render the technical and notes sections as the **tables** in the template
+   (Technical Plan, Data & Contracts, Failure Modes, Alternatives, Detailed Implementation,
+   Constraints, Decisions, Open Questions) — tables scan far better than bullet lists. Reserve
+   prose for the short framing paragraph and the block diagram.
 9. **Track the unknowns** — log assumptions, decisions, open questions, and non-goals as they
    surface.
-10. **Finalize** via `ExitPlanMode`; write `spec.md` on approval.
+10. **Finalize** via `ExitPlanMode`; write `SPEC.md` on approval.
 
 ## Spec Template
 
@@ -215,25 +240,59 @@ What's explicitly out.
 ## Slices
 End-to-end pieces, each valuable on its own. For each, name the human action that demonstrates
 its value ("user types X → sees Y") — if you can't, it's a layer, not a slice.
-- Slice 1: ... — Demonstrated by: ...
+
+| # | Slice | Demonstrated by (human action → observable result) |
+|---|-------|------------------------------------------------------|
+| 1 | ...   | user types X → sees Y                                |
 
 ## Technical Plan
-How it works, in prose, plus a block diagram of the major components.
+How it works, in prose (a short paragraph), plus a block diagram and a component table.
 
 ```
 [ Component A ] --> [ Component B ] --> [ Component C ]
 ```
 
+| Component | Responsibility | Inputs → Outputs | Runs where (client/server/worker) | Notes |
+|-----------|----------------|------------------|-----------------------------------|-------|
+| ...       | ...            | ... → ...        | ...                               | ...   |
+
+### Data & Contracts
+Data shapes, sources of truth, and the interfaces (APIs/events/schemas) added or changed.
+
+| Entity / Endpoint | Shape / Signature | Source of truth | Change type (new/additive/breaking) | Notes |
+|-------------------|-------------------|-----------------|-------------------------------------|-------|
+| ...               | ...               | ...             | ...                                 | ...   |
+
+### Failure Modes & Non-Functionals
+Edge cases, error paths, and the numbers that define "good enough."
+
+| Concern | Expected behavior | Target / limit | Fallback |
+|---------|-------------------|----------------|----------|
+| empty/invalid input | ... | — | ... |
+| dependency down     | ... | — | ... |
+| latency             | ... | p95 < ___ms | — |
+| scale / load        | ... | ___ req/s   | ... |
+
 ## Alternatives Considered and Rejected
 Options ruled out, and why. These guard against drifting back.
-- Alternative: ... — Rejected because ...
+
+| Decision point | Option chosen | Alternatives rejected | Why rejected |
+|----------------|---------------|-----------------------|--------------|
+| ...            | ...           | ...                   | ...          |
 
 ## Detailed Implementation
 Every file to be created or changed, and why.
-- `path/to/file` — what changes, and why.
+
+| File | Change (new/modify/delete) | What & why |
+|------|----------------------------|------------|
+| `path/to/file` | modify | ... |
 
 ## Constraints
 Limits: time, tech, budget, policy.
+
+| Constraint | Limit | Impact on the design |
+|------------|-------|----------------------|
+| ...        | ...   | ...                  |
 
 ## Success Criteria
 How we'll know it works.
@@ -247,17 +306,29 @@ What we're taking as true.
 ## Decisions
 Choices made, and why.
 
+| Decision | Choice | Rationale |
+|----------|--------|-----------|
+| ...      | ...    | ...       |
+
 ## Open Questions
 Unresolved items.
+
+| # | Question | Blocks (what it gates) | Owner |
+|---|----------|------------------------|-------|
+| 1 | ...      | ...                    | ...   |
 ````
 
 ## Rules
 
-- Interview in plan mode; stay read-only until `ExitPlanMode` finalizes and writes `spec.md`.
+- Interview in plan mode; stay read-only until `ExitPlanMode` finalizes and writes `SPEC.md`.
 - Classify before interviewing; push back on Epics and make the user slice them first.
 - No sycophancy, no praise, no validation theater — lead with substance and challenge weak
   reasoning. Disagreement, stated with reasons, is the value you add.
 - Interrogate both the product and technical angles; don't accept a vague answer on either.
+  Go deep on the technical side — follow each answer with the sharper question it invites
+  (control flow, concurrency, failure paths, contracts, numbers), not one question per topic.
+- Draft the technical and notes sections as **tables** (per the template), not bullet lists —
+  prose only for the short framing paragraph and the diagram.
 - Offer concrete options at every decision and make the user defend the pick; record the
   rejected ones as guardrails.
 - Every slice is vertical and end-to-end (see Value Check); when too big, narrow the behavior,
@@ -273,6 +344,6 @@ Unresolved items.
 
 ## Final Output
 
-A clean `spec.md` with the sections above filled in — product framing, technical plan,
+A clean `SPEC.md` with the sections above filled in — product framing, technical plan,
 alternatives, detailed implementation, and verification. Concise, no bloat. Leave open
 questions visible rather than guessing.
