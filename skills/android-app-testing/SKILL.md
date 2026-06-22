@@ -62,15 +62,17 @@ the gap to the user.
 ```bash
 # Boots the named AVD if nothing suitable is running, waits for a FULL boot
 # (not just the lock screen), disables animations, and prints the serial.
+# Headless by default — no emulator window opens (uses -no-window + swiftshader).
 python scripts/adb_test.py boot --avd Pixel_7_API_34
-# Headless (CI / no display):
-python scripts/adb_test.py boot --avd Pixel_7_API_34 --headless
+# Add --show to also open the emulator GUI window:
+python scripts/adb_test.py boot --avd Pixel_7_API_34 --show
 ```
 
 Capture the printed serial. If several devices are attached, pass `--serial <id>`
 to later commands or `export ANDROID_SERIAL=<id>` once. A "booted" device can
 still take a few seconds before the launcher is interactive — the first
-`wait-text` will absorb that.
+`wait-text` will absorb that. Headless and windowed behave identically —
+`screenshot`, `find`, taps, and UI dumps all work either way.
 
 ## Step 2 — Install (or build then install) the app
 

@@ -30,8 +30,8 @@ times out:
 - Cold boots are slow on first run — re-run `boot` with `--timeout 300`.
 - A wedged emulator: `adb emu kill` (or `adb_test.py kill-emulator`), then boot
   again. As a last resort wipe state: `emulator -avd <name> -wipe-data`.
-- Headless/CI with no GPU: boot with `--headless` (the helper passes
-  `-no-window -no-audio -gpu swiftshader_indirect`).
+- Headless is the default — `boot` passes `-no-window -no-audio -gpu
+  swiftshader_indirect` unless you pass `--show` to open the GUI window.
 
 ## `device offline` or `unauthorized`
 
@@ -124,6 +124,7 @@ adb shell pm revoke <pkg> android.permission.ACCESS_FINE_LOCATION
 
 ## GPU / headless rendering issues
 
-On CI or over SSH with no display, boot `--headless`. If the UI renders black or
-the emulator crashes on GPU init, try `-gpu swiftshader_indirect` (software, the
-headless default) or `-gpu off`.
+`boot` runs headless by default (no display needed), which is what you want on CI
+or over SSH. If the UI renders black or the emulator crashes on GPU init, the
+helper already uses `-gpu swiftshader_indirect` (software); as a fallback try
+`-gpu off`.

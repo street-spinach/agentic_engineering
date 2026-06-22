@@ -271,11 +271,13 @@ def cmd_boot(a):
         raise EnvError("no booted device and no --avd given. "
                        "Pass --avd <name> (see: emulator -list-avds).")
 
-    # Launch the emulator detached.
+    # Launch the emulator detached. Headless (no window) is the default — matching
+    # the iOS skill, which boots windowless. Pass --show to open the emulator GUI.
+    headless = not a.show
     em_args = ["emulator", "-avd", a.avd, "-no-snapshot-save"]
-    if a.headless:
+    if headless:
         em_args += ["-no-window", "-no-audio", "-gpu", "swiftshader_indirect"]
-    print(f"booting AVD '{a.avd}'{' (headless)' if a.headless else ''} ...", file=sys.stderr)
+    print(f"booting AVD '{a.avd}'{' (headless)' if headless else ' (windowed)'} ...", file=sys.stderr)
     try:
         subprocess.Popen(em_args, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
     except FileNotFoundError:
@@ -623,7 +625,10 @@ def build_parser():
 
     s = sub.add_parser("boot", help="boot an AVD (or reuse a running device) and wait for full boot")
     s.add_argument("--avd", help="AVD name (emulator -list-avds)")
-    s.add_argument("--headless", action="store_true", help="no window / no audio (CI)")
+    s.add_argument("--show", action="store_true",
+                   help="open the emulator GUI window (otherwise runs headless)")
+    s.add_argument("--headless", action="store_true",
+                   help=argparse.SUPPRESS)  # deprecated: headless is now the default
     s.add_argument("--timeout", type=int, default=180, help="boot timeout seconds")
     s.set_defaults(fn=cmd_boot)
 
