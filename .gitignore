@@ -1,0 +1,12 @@
+# Ephemeral build scaffolding — created per feature, read/updated by the agent
+# during a build, but never committed. Durable knowledge is distilled into
+# ARCHITECTURE.md + docs/adr/ on feature completion (see the distill-spec skill).
+SPEC.md
+TASKS.md
+.agent/
+
+# Local telemetry from the cache-meter hook
+.cache-metrics.log
+
+# OS / editor cruft
+.DS_Store

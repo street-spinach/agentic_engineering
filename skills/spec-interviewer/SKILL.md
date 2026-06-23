@@ -204,15 +204,19 @@ If the user isn't in plan mode when the skill starts, ask to switch into it befo
 3. **Offer concrete options at each decision**; make the user defend the choice; record the
    rejected ones.
 4. **Slice** into vertical end-to-end pieces (Value Check). Reject layer-only slices.
-5. **Propose the design yourself** — prose plus a block diagram. A real proposal exposes your
-   understanding and the user's blind spots; asking them to propose first lets theirs survive.
+5. **Propose the design yourself** — prose plus block diagrams from the `design-diagrams` skill.
+   A wall of words is hard to review; a picture isn't. Draw at minimum a **module/component map**
+   and a **sequence** for the key flow; add a **high-level class** or **ER** diagram when types
+   or data carry the design. A real proposal exposes your understanding and the user's blind
+   spots; asking them to propose first lets theirs survive.
 6. **Plan the implementation** — every file to be created or changed, and why.
 7. **Define verification** — the end-to-end check that proves the feature works.
 8. **Draft `SPEC.md` incrementally** — section by section, showing progress; never dump a
    finished doc. Render the technical and notes sections as the **tables** in the template
    (Technical Plan, Data & Contracts, Failure Modes, Alternatives, Detailed Implementation,
    Constraints, Decisions, Open Questions) — tables scan far better than bullet lists. Reserve
-   prose for the short framing paragraph and the block diagram.
+   prose for the short framing paragraph and let the **block diagrams** (from `design-diagrams`)
+   carry the structure and flow — reading words alone is hard.
 9. **Track the unknowns** — log assumptions, decisions, open questions, and non-goals as they
    surface.
 10. **Finalize** via `ExitPlanMode`; write `SPEC.md` on approval.
@@ -246,10 +250,25 @@ its value ("user types X → sees Y") — if you can't, it's a layer, not a slic
 | 1 | ...   | user types X → sees Y                                |
 
 ## Technical Plan
-How it works, in prose (a short paragraph), plus a block diagram and a component table.
+How it works, in a short paragraph, plus diagrams (via `design-diagrams`) and a component table.
+
+**Module / component map** — who talks to whom (label the arrows):
 
 ```
-[ Component A ] --> [ Component B ] --> [ Component C ]
+┌──────────┐  REST   ┌───────────────┐  SQL   ┌────────────┐
+│ Web App  │ ──────> │ Order Service │ ─────> │ Orders DB  │
+└──────────┘         └───────────────┘        └────────────┘
+```
+
+**Key flow** — the happy path, in order (sequence diagram):
+
+```
+ User            API            DB
+  │  POST /orders │              │
+  │ ─────────────>│ insert order │
+  │               │ ────────────>│
+  │  201 Created  │ <─────── id  │
+  │ <─────────────│              │
 ```
 
 | Component | Responsibility | Inputs → Outputs | Runs where (client/server/worker) | Notes |
@@ -257,7 +276,15 @@ How it works, in prose (a short paragraph), plus a block diagram and a component
 | ...       | ...            | ... → ...        | ...                               | ...   |
 
 ### Data & Contracts
-Data shapes, sources of truth, and the interfaces (APIs/events/schemas) added or changed.
+Data shapes, sources of truth, and the interfaces (APIs/events/schemas) added or changed. When
+new entities/relations are introduced, add an **ER diagram** (via `design-diagrams`):
+
+```
+┌──────────┐ 1   * ┌──────────────┐ 1   * ┌────────────┐
+│ CUSTOMER │ ──────│ ORDER        │ ──────│ LINE_ITEM  │
+└──────────┘ places│ id        PK │contains│ order_id FK│
+                   └──────────────┘        └────────────┘
+```
 
 | Entity / Endpoint | Shape / Signature | Source of truth | Change type (new/additive/breaking) | Notes |
 |-------------------|-------------------|-----------------|-------------------------------------|-------|
@@ -328,15 +355,16 @@ Unresolved items.
   Go deep on the technical side — follow each answer with the sharper question it invites
   (control flow, concurrency, failure paths, contracts, numbers), not one question per topic.
 - Draft the technical and notes sections as **tables** (per the template), not bullet lists —
-  prose only for the short framing paragraph and the diagram.
+  prose only for the short framing paragraph; let block diagrams carry structure and flow.
 - Offer concrete options at every decision and make the user defend the pick; record the
   rejected ones as guardrails.
 - Every slice is vertical and end-to-end (see Value Check); when too big, narrow the behavior,
   never drop layers.
 - Interview before drafting — no full spec from one prompt; ask in small batches, one topic at a
   time.
-- Propose the design yourself, in prose and a block diagram — don't ask the user to propose
-  first.
+- Propose the design yourself, in prose plus block diagrams from the `design-diagrams` skill
+  (module map + sequence for the key flow; class/ER where they help) — reading words alone is
+  hard. Don't ask the user to propose first.
 - Don't jump to implementation while still framing the problem; reach the technical plan only
   after the slices are agreed.
 - Be concise; cut filler. Capture assumptions, decisions, open questions, and non-goals as you
