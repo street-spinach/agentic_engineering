@@ -17,7 +17,8 @@ choice, see `docs/adr/`. For *what's being built next*, see the ephemeral
 - `spec-interviewer` — interviews the user (product + technical) to co-write `SPEC.md`.
 - `harden-spec` — verification gate; runs the goldfish-spec-reviewer 3× and stamps `SPEC.md`.
 - `plan-slices` — turns a verified `SPEC.md` into `TASKS.md` of vertical slices.
-- `code-review` — orchestrates fresh-eyes review of a diff or PR.
+- `code-verifier` — orchestrates fresh-eyes verification of a diff or PR against the spec.
+- `code-reviewer` (+ `python` / `go` / `nodejs` / `flutter-dart`) — shared review checklist + language-specific concerns.
 - `auto-commit` — curated, scoped local commits.
 - `test-backfill` — push-time safety net that fills missing tests.
 - `unit-testing` (+ `python` / `go` / `nodejs` / `flutter-dart`) — shared testing policy + stack idioms.
@@ -27,7 +28,7 @@ choice, see `docs/adr/`. For *what's being built next*, see the ephemeral
 **Subagents (`agents/`) — fresh-eyes, no memory of the build conversation.**
 
 - `goldfish-spec-reviewer` — pressure-tests `SPEC.md` (comprehension / critic / readiness).
-- `code-reviewer` — pressure-tests the diff against the verified spec.
+- `code-verifier` — pressure-tests the diff against the verified spec.
 - `unit-test-generator` — writes behavior-focused tests at the right depth.
 
 **Hooks (`hooks/`) — deterministic, never call a model.**
@@ -47,7 +48,7 @@ choice, see `docs/adr/`. For *what's being built next*, see the ephemeral
 intent ─▶ prompt-enhancer / spec-interviewer ─▶ SPEC.md
         ─▶ harden-spec (goldfish ×3) ─▶ SPEC.md [VERIFIED]
         ─▶ plan-slices ─▶ TASKS.md
-        ─▶ per slice: implement ─▶ lint+test hooks ─▶ code-review ─▶ auto-commit
+        ─▶ per slice: implement ─▶ lint+test hooks ─▶ code-verifier ─▶ auto-commit
         ─▶ (git push) pre-push hook ─▶ test-backfill ─▶ PR
         ─▶ feature done ─▶ distill-spec ─▶ docs/adr/* + ARCHITECTURE.md
 ```

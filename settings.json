@@ -1,5 +1,13 @@
 {
   "_comment": "Deterministic hook wiring (never calls a model): lint-dispatch.sh (lint lane) + test-runner.sh (unit-test lane). This file lives at the agentic_eng artefact-library root. To activate it for a project, merge this 'hooks' block into that project's .claude/settings.json (or ~/.claude/settings.json), or symlink it. Paths use $CLAUDE_PROJECT_DIR; if a script lives elsewhere than the active project root, swap in its absolute path. The two scripts share the PreToolUse Bash commit gate but own separate lanes (lint vs tests); test-runner adds no PostToolUse hook, so it never races the per-edit linter.",
+  "_comment_telemetry": "Claude Code OpenTelemetry — wired but OFF by default. Bring up observability/docker-compose.yml, then set CLAUDE_CODE_ENABLE_TELEMETRY to '1' to export token/cost metrics to the local collector (localhost:4317). hooks/cache-meter.sh is the inline per-turn complement; this is the durable, queryable layer. Remove this 'env' block to fully unwire.",
+  "env": {
+    "CLAUDE_CODE_ENABLE_TELEMETRY": "0",
+    "OTEL_METRICS_EXPORTER": "otlp",
+    "OTEL_LOGS_EXPORTER": "otlp",
+    "OTEL_EXPORTER_OTLP_PROTOCOL": "grpc",
+    "OTEL_EXPORTER_OTLP_ENDPOINT": "http://localhost:4317"
+  },
   "hooks": {
     "PostToolUse": [
       {

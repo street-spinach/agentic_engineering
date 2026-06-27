@@ -1,10 +1,10 @@
 {
   "name": "agentic-eng",
   "version": "0.1.0",
-  "description": "Gated agentic-engineering workflow — spec-interviewer -> harden-spec -> plan-slices -> per-slice implement/review/commit — with fresh-eyes subagents and deterministic lint/test hooks.",
+  "description": "Gated agentic-engineering workflow — spec-interviewer -> harden-spec -> plan-slices -> per-slice implement/review/commit — with fresh-eyes subagents and deterministic lint/test hooks. Includes an autonomous issue-loop that fixes GitHub issues end to end with triage routing and a merge -> deploy -> verify gate.",
   "author": {
     "name": "Madushanka",
     "email": "madushanka@wso2.com"
   },
-  "keywords": ["agentic", "workflow", "spec", "code-review", "testing"]
+  "keywords": ["agentic", "workflow", "spec", "code-review", "testing", "github-issues", "deploy", "verify"]
 }

@@ -72,7 +72,7 @@ history.
    not judgment — the pre-push hook's background runner (plain shell) does them, so
    they never route through Claude's `git push` permission and your `settings.json`
    stays untouched. Run by hand, you push + `gh pr create` + move the tag yourself.
-7. **Report** (format below). Recommend `/code-review` (PR mode) on the new PR.
+7. **Report** (format below). Recommend `/code-verifier` (PR mode) on the new PR.
 
 ## Hard Rules
 

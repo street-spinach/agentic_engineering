@@ -1,0 +1,40 @@
+# OTel Collector — receives OTLP from Claude Code, exposes metrics for Prometheus
+# to scrape, and prints logs/traces for local inspection. Minimal, local-first.
+receivers:
+  otlp:
+    protocols:
+      grpc:
+        endpoint: 0.0.0.0:4317
+      http:
+        endpoint: 0.0.0.0:4318
+
+processors:
+  batch:
+    timeout: 10s
+
+exporters:
+  # Metrics -> a /metrics endpoint Prometheus scrapes. Keep resource attributes
+  # (session.id, service.name, any OTEL_RESOURCE_ATTRIBUTES) as labels so you can
+  # slice cost by model / session / loop-run.
+  prometheus:
+    endpoint: 0.0.0.0:8889
+    resource_to_telemetry_conversion:
+      enabled: true
+  # Logs/events + traces -> stdout. View with: docker compose logs -f collector
+  debug:
+    verbosity: detailed
+
+service:
+  pipelines:
+    metrics:
+      receivers: [otlp]
+      processors: [batch]
+      exporters: [prometheus]
+    logs:
+      receivers: [otlp]
+      processors: [batch]
+      exporters: [debug]
+    traces:
+      receivers: [otlp]
+      processors: [batch]
+      exporters: [debug]

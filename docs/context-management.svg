@@ -1,0 +1,69 @@
+<svg viewBox="0 0 820 472" xmlns="http://www.w3.org/2000/svg" role="img" width="820" height="472">
+<title>Context management strategy</title>
+<desc>The active context window is kept high-signal by three mechanisms — externalizing state to durable stores, compacting at safe seams, and surfacing instructions just in time in layers — and a telemetry feedback loop that senses bloat and triggers compaction.</desc>
+<defs>
+<style>
+svg{
+--c-text:#1d1d1f;
+--c-text2:#6e6e73;
+--c-edge:#b4b4bb;
+--c-bd:#d2d2d7;
+--c-acc:#2f6df6;
+--c-neu:#f4f4f5;
+--c-accbg:#e6eefc;
+--c-chip:#ffffff;
+background:#ffffff;
+}
+text{font-family:ui-sans-serif,-apple-system,system-ui,"Segoe UI",sans-serif;}
+.t{fill:var(--c-text);}.t2{fill:var(--c-text2);}
+.win{fill:var(--c-accbg);stroke:var(--c-acc);stroke-width:2;}
+.hdr{fill:var(--c-neu);stroke:var(--c-bd);stroke-width:1.3;}
+.chip{fill:var(--c-chip);stroke:var(--c-bd);stroke-width:1;}
+.fb{fill:var(--c-accbg);stroke:var(--c-acc);stroke-width:1.5;}
+.e{stroke:var(--c-edge);stroke-width:1.6;fill:none;}
+.trig{stroke:var(--c-acc);stroke-width:1.6;fill:none;stroke-dasharray:5 4;}
+.tag{font-size:9.5px;fill:var(--c-text2);font-weight:600;letter-spacing:.3px;}
+.h{font-size:12.5px;font-weight:700;}
+.s{font-size:10px;}
+</style>
+<marker id="a" markerWidth="9" markerHeight="9" refX="6.5" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#b4b4bb"/></marker>
+<marker id="aA" markerWidth="9" markerHeight="9" refX="6.5" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#2f6df6"/></marker>
+</defs>
+
+<text x="30" y="26" class="t" font-size="15.5" font-weight="700">Keeping context healthy (no rot)</text>
+<rect x="600" y="16" width="12" height="12" rx="3" class="win"/><text x="617" y="26" class="tag">window &amp; sensing</text>
+<rect x="712" y="16" width="12" height="12" rx="3" class="hdr"/><text x="729" y="26" class="tag">mechanisms</text>
+
+<rect x="270" y="48" width="280" height="52" rx="11" class="win"/>
+<text x="410" y="70" text-anchor="middle" class="t h">Active context window</text>
+<text x="410" y="86" text-anchor="middle" class="t2 s">high-signal only · current unit + pointers</text>
+
+<path class="e" d="M147,150 L335,100" marker-end="url(#a)"/>
+<path class="e" d="M410,150 L410,102" marker-end="url(#a)"/>
+<path class="e" d="M673,150 L485,100" marker-end="url(#a)"/>
+
+<rect x="30" y="150" width="233" height="34" rx="8" class="hdr"/>
+<text x="146" y="172" text-anchor="middle" class="t h">1 · Externalize ↓</text>
+<rect x="40" y="194" width="213" height="36" rx="7" class="chip"/><text x="146" y="210" text-anchor="middle" class="t s">Durable stores out of window</text><text x="146" y="223" text-anchor="middle" class="t2 s">SPEC · TASKS · ADR · issues</text>
+<rect x="40" y="236" width="213" height="36" rx="7" class="chip"/><text x="146" y="252" text-anchor="middle" class="t s">Subagents isolate heavy reads</text><text x="146" y="265" text-anchor="middle" class="t2 s">only the verdict returns</text>
+<rect x="40" y="278" width="213" height="32" rx="7" class="chip"/><text x="146" y="298" text-anchor="middle" class="t s">Pointers, not payloads</text>
+
+<rect x="287" y="150" width="246" height="34" rx="8" class="hdr"/>
+<text x="410" y="172" text-anchor="middle" class="t h">2 · Compact at seams ↻</text>
+<rect x="297" y="194" width="226" height="36" rx="7" class="chip"/><text x="410" y="210" text-anchor="middle" class="t s">Seams: slice close · harden · APPROVE</text><text x="410" y="223" text-anchor="middle" class="t2 s">proactive, not reactive auto-compact</text>
+<rect x="297" y="236" width="226" height="36" rx="7" class="chip"/><text x="410" y="252" text-anchor="middle" class="t s">&gt;60% mid-unit → checkpoint first</text><text x="410" y="265" text-anchor="middle" class="t2 s">then compact early</text>
+<rect x="297" y="278" width="226" height="32" rx="7" class="chip"/><text x="410" y="298" text-anchor="middle" class="t s">Keep anchors · drop noise</text>
+
+<rect x="557" y="150" width="233" height="34" rx="8" class="hdr"/>
+<text x="673" y="172" text-anchor="middle" class="t h">3 · Surface JIT ↑</text>
+<rect x="567" y="194" width="213" height="36" rx="7" class="chip"/><text x="673" y="210" text-anchor="middle" class="t s">CLAUDE.md: always-on, tiny</text><text x="673" y="223" text-anchor="middle" class="t2 s">gates only · stable prefix</text>
+<rect x="567" y="236" width="213" height="36" rx="7" class="chip"/><text x="673" y="252" text-anchor="middle" class="t s">Skill bodies load on invoke</text><text x="673" y="265" text-anchor="middle" class="t2 s">description = the index</text>
+<rect x="567" y="278" width="213" height="32" rx="7" class="chip"/><text x="673" y="298" text-anchor="middle" class="t s">Rules re-surface post-compact</text>
+
+<path class="trig" d="M410,372 L410,312" marker-end="url(#aA)"/>
+<text x="424" y="346" class="t2 s">trigger</text>
+<rect x="30" y="372" width="760" height="58" rx="11" class="fb"/>
+<text x="410" y="394" text-anchor="middle" class="t h">Feedback loop — sensors close it</text>
+<text x="410" y="411" text-anchor="middle" class="t2 s">cache read-rate ↓  /  fresh tokens ↑  →  cue to compact  →  re-measure</text>
+<text x="410" y="424" text-anchor="middle" class="t2 s">cache-meter (inline)  +  OpenTelemetry dashboards</text>
+</svg>

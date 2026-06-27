@@ -110,14 +110,16 @@ measure against it, stop when it's met:
 3. **Test as part of the slice** — delegate to `unit-test-generator`, risk-based,
    at the depth the slice's risk warrants (per Hard Rules; not a final phase).
 4. **Run checks** — lint + test-runner hooks. *(Measure.)*
-5. **Review against acceptance** — `/code-review` must APPROVE **and** the goal
+5. **Verify against acceptance** — `/code-verifier` must APPROVE **and** the goal
    must be met. *(Compare.)*
 6. **Fix** — address findings/failures; back to step 4. *(Correct.)*
 7. **Gate + advance** — only when green **and** acceptance met **and** APPROVE →
    `/auto-commit`, mark the slice done, log discovered work. *(Exit condition met
    → next slice.)*
 8. **Compact** — after `/auto-commit` at the slice boundary, run `/compact`;
-   TASKS.md and SPEC.md rehydrate the next slice.
+   TASKS.md and SPEC.md rehydrate the next slice. Compact at seams, not mid-edit;
+   if the window passes ~60% off a seam, checkpoint to TASKS.md and compact early
+   (see `CLAUDE.md` → Compact Instructions).
 
 ## Goals & Loops
 

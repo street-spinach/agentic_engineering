@@ -204,24 +204,60 @@ If the user isn't in plan mode when the skill starts, ask to switch into it befo
 3. **Offer concrete options at each decision**; make the user defend the choice; record the
    rejected ones.
 4. **Slice** into vertical end-to-end pieces (Value Check). Reject layer-only slices.
-5. **Propose the design yourself** — prose plus block diagrams from the `design-diagrams` skill.
-   A wall of words is hard to review; a picture isn't. Draw at minimum a **module/component map**
-   and a **sequence** for the key flow; add a **high-level class** or **ER** diagram when types
-   or data carry the design. A real proposal exposes your understanding and the user's blind
-   spots; asking them to propose first lets theirs survive.
-6. **Plan the implementation** — every file to be created or changed, and why.
-7. **Define verification** — the end-to-end check that proves the feature works.
-8. **Draft `SPEC.md` incrementally** — section by section, showing progress; never dump a
-   finished doc. Render the technical and notes sections as the **tables** in the template
-   (Technical Plan, Data & Contracts, Failure Modes, Alternatives, Detailed Implementation,
-   Constraints, Decisions, Open Questions) — tables scan far better than bullet lists. Reserve
-   prose for the short framing paragraph and let the **block diagrams** (from `design-diagrams`)
-   carry the structure and flow — reading words alone is hard.
-9. **Track the unknowns** — log assumptions, decisions, open questions, and non-goals as they
+5. **Propose the design yourself** — prose plus, *when structure or flow is non-trivial*, block
+   diagrams from the `design-diagrams` skill. A wall of words is hard to review; a picture isn't.
+   Draw a **module/component map** and a **sequence** for the key flow when the design spans
+   multiple components or has non-obvious ordering; add a **class** or **ER** diagram when types
+   or data carry the design. For a single-component Task with an obvious flow, skip the diagrams —
+   don't draw a box-and-arrow for one box. A real proposal exposes your understanding and the
+   user's blind spots; asking them to propose first lets theirs survive.
+6. **Define verification** — the end-to-end check that proves the feature works. Do **not**
+   enumerate the file-by-file change list here — that's `plan-slices`/`TASKS.md`'s job. SPEC
+   says *what & why*; TASKS says *which files*.
+7. **Draft `SPEC.md` incrementally** — section by section, showing progress; never dump a
+   finished doc. Include the **core** sections always and the **as-needed** sections only when
+   they carry real risk (see *Right-Size the Spec*). Render the sections you do include as the
+   **tables** in the template — tables scan far better than bullet lists — but never pad a table
+   to fill a section that doesn't apply; omit it. Reserve prose for the short framing paragraph
+   and let any block diagrams carry the structure and flow.
+8. **Track the unknowns** — log assumptions, decisions, open questions, and non-goals as they
    surface.
-10. **Finalize** via `ExitPlanMode`; write `SPEC.md` on approval.
+9. **Finalize** via `ExitPlanMode`; write `SPEC.md` on approval.
+
+## Right-Size the Spec
+
+A spec is only as long as the risk demands. A bloated spec is not more rigorous — it just gives
+fresh-eyes review (and `/harden-spec`) more surface to nitpick, which is the main reason
+hardening fails to converge. Scale the document to the altitude you classified:
+
+**Core sections — always include:**
+
+- **Goal**, **Problem**, **Scope / Non-Goals**, **Slices**, **Technical Plan** (the approach +
+  component table; diagrams only when non-trivial), **Verification**.
+
+**As-needed sections — include only when they carry real risk; otherwise omit entirely:**
+
+- **Data & Contracts** — only if new/changed schemas, APIs, events, or persistent state.
+- **Failure Modes & Non-Functionals** — only if there are non-obvious error paths or real
+  latency/throughput/scale targets.
+- **Alternatives Considered** — only where a genuine fork was decided; one row per real fork,
+  not a row per trivial choice.
+- **Constraints** — only if a real limit (time, stack, policy) shapes the design.
+- **Assumptions / Decisions / Open Questions** — include only the rows that exist; an empty
+  table is noise, drop it.
+
+**Altitude guide:** a **Task** is usually core-only — Goal, Scope, one or two Slices, a short
+Technical Plan, Verification — often under a page, no diagrams. A **Feature** adds whichever
+as-needed sections carry its risk. If you're filling a section with "..." or "N/A", that's the
+signal to delete it, not pad it.
+
+The spec does **not** list the files to be created or changed — that belongs in
+`plan-slices`/`TASKS.md`. Keep SPEC at the *what & why* altitude.
 
 ## Spec Template
+
+> Include the **core** sections always; include each **as-needed** section only when it carries
+> risk (see *Right-Size the Spec*). Omit — don't pad — any section that doesn't apply.
 
 ````markdown
 # <Product / Feature Name>
@@ -275,7 +311,7 @@ How it works, in a short paragraph, plus diagrams (via `design-diagrams`) and a 
 |-----------|----------------|------------------|-----------------------------------|-------|
 | ...       | ...            | ... → ...        | ...                               | ...   |
 
-### Data & Contracts
+### Data & Contracts  *(as-needed — only if schemas/APIs/events/persistent state change)*
 Data shapes, sources of truth, and the interfaces (APIs/events/schemas) added or changed. When
 new entities/relations are introduced, add an **ER diagram** (via `design-diagrams`):
 
@@ -290,7 +326,7 @@ new entities/relations are introduced, add an **ER diagram** (via `design-diagra
 |-------------------|-------------------|-----------------|-------------------------------------|-------|
 | ...               | ...               | ...             | ...                                 | ...   |
 
-### Failure Modes & Non-Functionals
+### Failure Modes & Non-Functionals  *(as-needed — only for non-obvious error paths or real targets)*
 Edge cases, error paths, and the numbers that define "good enough."
 
 | Concern | Expected behavior | Target / limit | Fallback |
@@ -300,21 +336,14 @@ Edge cases, error paths, and the numbers that define "good enough."
 | latency             | ... | p95 < ___ms | — |
 | scale / load        | ... | ___ req/s   | ... |
 
-## Alternatives Considered and Rejected
+## Alternatives Considered and Rejected  *(as-needed — one row per real fork only)*
 Options ruled out, and why. These guard against drifting back.
 
 | Decision point | Option chosen | Alternatives rejected | Why rejected |
 |----------------|---------------|-----------------------|--------------|
 | ...            | ...           | ...                   | ...          |
 
-## Detailed Implementation
-Every file to be created or changed, and why.
-
-| File | Change (new/modify/delete) | What & why |
-|------|----------------------------|------------|
-| `path/to/file` | modify | ... |
-
-## Constraints
+## Constraints  *(as-needed — only if a real limit shapes the design)*
 Limits: time, tech, budget, policy.
 
 | Constraint | Limit | Impact on the design |
@@ -327,18 +356,19 @@ How we'll know it works.
 ## Verification
 The end-to-end check that proves the feature works.
 
-## Assumptions
+## Assumptions  *(as-needed — only the assumptions that actually exist)*
 What we're taking as true.
 
-## Decisions
+## Decisions  *(as-needed — only real decisions worth recording)*
 Choices made, and why.
 
 | Decision | Choice | Rationale |
 |----------|--------|-----------|
 | ...      | ...    | ...       |
 
-## Open Questions
-Unresolved items.
+## Open Questions  *(as-needed — only unresolved items that exist)*
+Unresolved items. A GAP that `/harden-spec` surfaces but the team chooses not to resolve now is
+parked here with its owner — that is an acceptable resolution, not a blocker.
 
 | # | Question | Blocks (what it gates) | Owner |
 |---|----------|------------------------|-------|
@@ -354,8 +384,14 @@ Unresolved items.
 - Interrogate both the product and technical angles; don't accept a vague answer on either.
   Go deep on the technical side — follow each answer with the sharper question it invites
   (control flow, concurrency, failure paths, contracts, numbers), not one question per topic.
+- **Right-size the spec to its altitude.** Include the core sections always; include as-needed
+  sections only when they carry real risk; omit — never pad — anything that doesn't apply. A
+  Task is usually core-only and under a page. A bloated spec isn't more rigorous — it just gives
+  hardening more to nitpick.
 - Draft the technical and notes sections as **tables** (per the template), not bullet lists —
   prose only for the short framing paragraph; let block diagrams carry structure and flow.
+- **SPEC carries no file-by-file list and no mandatory diagrams.** The change list lives in
+  `plan-slices`/`TASKS.md`; draw diagrams only when structure or flow is non-trivial.
 - Offer concrete options at every decision and make the user defend the pick; record the
   rejected ones as guardrails.
 - Every slice is vertical and end-to-end (see Value Check); when too big, narrow the behavior,
@@ -363,8 +399,9 @@ Unresolved items.
 - Interview before drafting — no full spec from one prompt; ask in small batches, one topic at a
   time.
 - Propose the design yourself, in prose plus block diagrams from the `design-diagrams` skill
-  (module map + sequence for the key flow; class/ER where they help) — reading words alone is
-  hard. Don't ask the user to propose first.
+  *when structure or flow is non-trivial* (module map + sequence for the key flow; class/ER
+  where they help). Skip diagrams for a single-component Task with an obvious flow. Don't ask
+  the user to propose first.
 - Don't jump to implementation while still framing the problem; reach the technical plan only
   after the slices are agreed.
 - Be concise; cut filler. Capture assumptions, decisions, open questions, and non-goals as you
@@ -372,6 +409,7 @@ Unresolved items.
 
 ## Final Output
 
-A clean `SPEC.md` with the sections above filled in — product framing, technical plan,
-alternatives, detailed implementation, and verification. Concise, no bloat. Leave open
-questions visible rather than guessing.
+A clean `SPEC.md` with the **core** sections filled in — product framing, technical plan, and
+verification — plus only the as-needed sections that carry real risk. Right-sized to its
+altitude, concise, no bloat; no file-by-file list (that's `TASKS.md`). Leave open questions
+visible rather than guessing.
